@@ -5,8 +5,6 @@ import {ClienteResponseDTO} from "../../dto/ClienteResponseDTO";
 import {UtilsMethods} from "../../utils/UtilsMethods";
 import {ClienteBodyDTO} from "../../dto/ClienteBodyDTO";
 import {Router} from "@angular/router";
-import {MatBottomSheetRef} from "@angular/material/bottom-sheet";
-import {AnalyticsComponent} from "../analytics/analytics.component";
 
 @Component({
   selector: 'app-vista-principal',
@@ -22,6 +20,8 @@ export class VistaPrincipalComponent implements OnInit {
   displayedColumns = ['idCliente','nombre', 'apellido', 'fechaNacimiento', 'fechaProblableDeMuerte'];
 
   clientes : ClienteResponseDTO[] = [];
+
+  loading = false
 
   cliente : ClienteBodyDTO={
     nombre :"",
@@ -67,7 +67,7 @@ export class VistaPrincipalComponent implements OnInit {
         if(next.status=="OK"){
           console.log(next.data!);
 
-          this.clientes = next.data!;
+          this.clientes = next.data!.sort((a,b)=>0-(a.idCliente>b.idCliente? 1 : -1));
         }
       },
       error => {
@@ -79,6 +79,7 @@ export class VistaPrincipalComponent implements OnInit {
 
   crearNuevoCliente(){
 
+    this.loading=true
     if(this.validarCampos()){
       console.log(this.cliente)
       this.clienteService.nuevoCliente(this.cliente).subscribe(
@@ -86,14 +87,16 @@ export class VistaPrincipalComponent implements OnInit {
           if(next.status=="OK"){
             this.getListClientesFromService()
             this.clearData()
+            this.loading=false
           }
         },
         error => {
-
+          this.loading=false
         }
       );
     }else {
       console.log("error")
+      this.loading=false
     }
   }
 
