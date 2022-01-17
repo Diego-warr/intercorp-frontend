@@ -1,0 +1,103 @@
+<div>
+  <mat-toolbar>
+    <span>Intercorp Clientes</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button
+            class="example-icon favorite-icon"
+            aria-label="Example icon-button with heart icon"
+            (click)="irEstadisticas()"
+            matTooltip="Ver estadísticas"
+    >
+      <mat-icon>analytics</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+
+<div>
+  <mat-grid-list cols="6" >
+    <mat-grid-tile colspan="2" rowspan="2">
+      <mat-card>
+        <mat-card-title>Formulario de cliente</mat-card-title>
+        <mat-card-subtitle>Nuevo cliente</mat-card-subtitle>
+        <mat-card-content>
+          <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Nombres</mat-label>
+              <input type="text" matInput [formControl]="nombreFormControl" placeholder="Ejm. Juan Carlos">
+              <mat-error *ngIf="nombreFormControl.hasError('email') && !nombreFormControl.hasError('required')">
+                Nombre requeridos
+              </mat-error>
+              <mat-error *ngIf="nombreFormControl.hasError('required')">
+                Nombres son <strong>requeridos</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Apellidos</mat-label>
+              <input type="text" matInput [formControl]="apellidosFormControl" placeholder="Ejm. Rojas Palacios">
+              <mat-error *ngIf="apellidosFormControl.hasError('email') && !apellidosFormControl.hasError('required')">
+                Apellidos son requeridos
+              </mat-error>
+              <mat-error *ngIf="apellidosFormControl.hasError('required')">
+                Apellidos <strong>requeridos</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input type="date" matInput [formControl]="fechaNacimientoFormControl" placeholder="Ejm. Rojas Palacios">
+              <mat-error *ngIf="fechaNacimientoFormControl.hasError('email') && !fechaNacimientoFormControl.hasError('required')">
+                Fecha de nacimiento es requerido
+              </mat-error>
+              <mat-error *ngIf="fechaNacimientoFormControl.hasError('required')">
+                Fecha de nacimiento <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="crearNuevoCliente()">Agregar cliente</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4" rowspan="2">
+      <div class="example-container mat-elevation-z8">
+        <table mat-table [dataSource]="clientes">
+
+
+          <ng-container matColumnDef="idCliente">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.idCliente}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="apellido">
+            <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+            <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="fechaNacimiento">
+            <th mat-header-cell *matHeaderCellDef> Fecha nac. </th>
+            <td mat-cell *matCellDef="let element"> {{parseDate(element.fechaNacimiento)}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fechaProblableDeMuerte">
+            <th mat-header-cell *matHeaderCellDef> FPM </th>
+            <td mat-cell *matCellDef="let element"> {{parseDate(element.fechaProblableDeMuerte)}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>
